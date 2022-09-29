@@ -1,0 +1,27 @@
+{
+  "name": "team_maker",
+  "version": "1.0.0",
+  "description": "team profile generator",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taholton748/Team_Maker.git"
+  },
+  "keywords": [
+    "node",
+    "html",
+    "generator"
+  ],
+  "author": "Tyler Holton",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/taholton748/Team_Maker/issues"
+  },
+  "homepage": "https://github.com/taholton748/Team_Maker#readme"
+}
