@@ -23,5 +23,9 @@
   "bugs": {
     "url": "https://github.com/taholton748/Team_Maker/issues"
   },
-  "homepage": "https://github.com/taholton748/Team_Maker#readme"
+  "homepage": "https://github.com/taholton748/Team_Maker#readme",
+  "dependencies": {
+    "inquirer": "^8.2.4",
+    "jest": "^29.1.2"
+  }
 }
