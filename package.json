@@ -25,7 +25,9 @@
   },
   "homepage": "https://github.com/taholton748/Team_Maker#readme",
   "dependencies": {
-    "inquirer": "^8.2.4",
+    "inquirer": "^8.2.4"
+  },
+  "devDependencies": {
     "jest": "^29.1.2"
   }
 }

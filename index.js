@@ -2,7 +2,7 @@
 const fs = require('fs');
 const inquirer = require('inquirer');
 const path = require('path');
-const generateMarkdown = require("./src/generateMarkdown");
+const generateMarkdown = require("./src/generateMarkdown.js");
 
 // Team array
 const teamArray = [];
@@ -31,6 +31,12 @@ const addManager = [
     }
 ];
 const addEmployee = [
+    {
+        type: 'confirm',
+        name: 'confirmNewMember',
+        message: "Would you like to add another team member?",
+        default: false
+    },
     {
         type: 'list',
         name: 'role',
@@ -62,12 +68,6 @@ const addEmployee = [
         name: 'school',
         message: "Enter school intern attends:"
     },
-    {
-        type: 'confirm',
-        name: 'confirmNewMember',
-        message: "Would you like to add another team member?",
-        default: false
-    }
 ];
 
 // Function to write HTML file
@@ -77,7 +77,13 @@ function writeToFile(fileName, data) {
 
 // Function to initialize app
 function init() {
-    inquirer.prompt(addManager).then((inquirerResponses) => {
+    inquirer.prompt(addManager)
+    .then((inquirerResponses) => {
+        console.log(inquirerResponses);
+        writeToFile("My_Team.html", generateMarkdown(inquirerResponses));
+    });
+    inquirer.prompt(addEmployee)
+    .then((inquirerResponses) => {
         console.log(inquirerResponses);
         writeToFile("My_Team.html", generateMarkdown(inquirerResponses));
     });
