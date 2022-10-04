@@ -81,12 +81,13 @@ function init() {
     .then((inquirerResponses) => {
         console.log(inquirerResponses);
         writeToFile("My_Team.html", generateMarkdown(inquirerResponses));
+        inquirer.prompt(addEmployee)
+        .then((inquirerResponses) => {
+            console.log(inquirerResponses);
+            writeToFile("My_Team.html", generateMarkdown(inquirerResponses));
+        });
     });
-    inquirer.prompt(addEmployee)
-    .then((inquirerResponses) => {
-        console.log(inquirerResponses);
-        writeToFile("My_Team.html", generateMarkdown(inquirerResponses));
-    });
+    
 }
 
 // Call to initialize app
