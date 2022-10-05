@@ -30,7 +30,7 @@ const addManager = [
         message: "Enter manager's office number:"
     }
 ];
-const addEmployee = [
+const confirmEmployee = [
     {
         type: 'confirm',
         name: 'confirmNewMember',
@@ -63,12 +63,29 @@ const addEmployee = [
         name: 'github',
         message: "Enter engineer's GitHub username:"
     },
+];
+const intern = [
+    {
+        type: 'input',
+        name: 'name',
+        message: "Enter employee name:"
+    },
+    {
+        type: 'input',
+        name: 'employeeId',
+        message: "Enter employee ID:"
+    },
+    {
+        type: 'input',
+        name: 'email',
+        message: "Enter employee's e-mail address:"
+    },
     {
         type: 'input',
         name: 'school',
         message: "Enter school intern attends:"
-    },
-];
+    }
+]
 
 // Function to write HTML file
 function writeToFile(fileName, data) {
@@ -80,11 +97,11 @@ function init() {
     inquirer.prompt(addManager)
     .then((inquirerResponses) => {
         console.log(inquirerResponses);
-        writeToFile("My_Team.html", generateMarkdown(inquirerResponses));
-        inquirer.prompt(addEmployee)
+        writeToFile("./dist/My_Team.html", generateMarkdown(inquirerResponses));
+        inquirer.prompt(confirmEmployee)
         .then((inquirerResponses) => {
             console.log(inquirerResponses);
-            writeToFile("My_Team.html", generateMarkdown(inquirerResponses));
+            writeToFile("./dist/My_Team.html", generateMarkdown(inquirerResponses));
         });
     });
     
