@@ -2,35 +2,80 @@
 const fs = require('fs');
 const inquirer = require('inquirer');
 const path = require('path');
-const generateMarkdown = require("./src/generateMarkdown.js");
+const generateHTML = require("./src/generateHTML.js");
 
 // Team array
 const teamArray = [];
 
+// Team profiles
+const Manager = require('./lib/Manager');
+const Engineer = require('./lib/Engineer');
+const Intern = require('./lib/Intern');
+
 // Add manager
-const addManager = [
-    {
-        type: 'input',
-        name: 'manager',
-        message: "Enter team manager's name:"
-    },
-    {
-        type: 'input',
-        name: 'managerId',
-        message: "Enter manager's employee ID:"
-    },
-    {
-        type: 'input',
-        name: 'managerEmail',
-        message: "Enter manager's e-mail address:"
-    },
-    {
-        type: 'input',
-        name: 'office',
-        message: "Enter manager's office number:"
-    }
-];
-const confirmEmployee = [
+const addManager = () => {
+    return inquirer.prompt ([
+        {
+            type: 'input',
+            name: 'managerName',
+            message: "Enter team manager's name:",
+            validate: managerName => {
+                if (managerName) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        },
+        {
+            type: 'input',
+            name: 'managerId',
+            message: "Enter manager's employee ID:",
+            validate: managerId => {
+                if (managerId) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        },
+        {
+            type: 'input',
+            name: 'managerEmail',
+            message: "Enter manager's e-mail address:",
+            validate: managerEmail => {
+                if (managerEmail) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        },
+        {
+            type: 'input',
+            name: 'office',
+            message: "Enter manager's office number:",
+            validate: office => {
+                if (office) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+    ])
+    .then(managerInput => {
+        const managerInput = { managerName, managerId, managerEmail, office };
+        const manager = new Manager (managerName, managerId, managerEmail, office);
+
+        teamArray.push(manager);
+        console.log(teamArray);
+    })
+};
+    
+// Confirm or deny new employee
+const addEmployee = () => {
+    return inquirer.prompt ([
     {
         type: 'confirm',
         name: 'confirmNewMember',
@@ -43,49 +88,76 @@ const confirmEmployee = [
         message: "Choose employee role:",
         choices: ['Engineer', 'Intern']
     },
+
+// Add employee info
     {
         type: 'input',
-        name: 'name',
-        message: "Enter employee name:"
+        name: 'nameInput',
+        message: "Enter employee name:",
+        validate: nameInput => {
+            if (nameInput) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     },
     {
         type: 'input',
-        name: 'employeeId',
-        message: "Enter employee ID:"
+        name: 'id',
+        message: "Enter employee ID:",
+        validate: id => {
+            if (id) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     },
     {
         type: 'input',
         name: 'email',
-        message: "Enter employee's e-mail address:"
+        message: "Enter employee's e-mail address:",
+        validate: email => {
+            if (email) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     },
+
+// Engineer only
     {
         type: 'input',
         name: 'github',
-        message: "Enter engineer's GitHub username:"
+        message: "Enter engineer's GitHub username:",
+        when: (input) => input.role === "Engineer",
+        validate: github => {
+            if (github) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     },
-];
-const intern = [
-    {
-        type: 'input',
-        name: 'name',
-        message: "Enter employee name:"
-    },
-    {
-        type: 'input',
-        name: 'employeeId',
-        message: "Enter employee ID:"
-    },
-    {
-        type: 'input',
-        name: 'email',
-        message: "Enter employee's e-mail address:"
-    },
+
+// Intern only
     {
         type: 'input',
         name: 'school',
-        message: "Enter school intern attends:"
+        message: "Enter school intern attends:",
+        when: (input) => input.role === "Intern",
+        validate: school => {
+            if (school) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
-]
+    ])
+};
 
 // Function to write HTML file
 function writeToFile(fileName, data) {
@@ -97,11 +169,11 @@ function init() {
     inquirer.prompt(addManager)
     .then((inquirerResponses) => {
         console.log(inquirerResponses);
-        writeToFile("./dist/My_Team.html", generateMarkdown(inquirerResponses));
-        inquirer.prompt(confirmEmployee)
+        writeToFile("./dist/My_Team.html", generateHTML(inquirerResponses));
+        inquirer.prompt(addEmployee)
         .then((inquirerResponses) => {
             console.log(inquirerResponses);
-            writeToFile("./dist/My_Team.html", generateMarkdown(inquirerResponses));
+            writeToFile("./dist/My_Team.html", generateHTML(inquirerResponses));
         });
     });
     
