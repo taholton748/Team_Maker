@@ -1,182 +1,237 @@
 // Packages to require
-const fs = require('fs');
-const inquirer = require('inquirer');
-const path = require('path');
-const generateHTML = require("./src/generateHTML.js");
+const fs = require("fs");
+const inquirer = require("inquirer");
+const path = require("path");
 
-// Team array
-const teamArray = [];
+// Team role classes
+const Manager = require("./lib/Manager");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
 
-// Team profiles
-const Manager = require('./lib/Manager');
-const Engineer = require('./lib/Engineer');
-const Intern = require('./lib/Intern');
 
 // Add manager
-const addManager = () => {
-    return inquirer.prompt ([
-        {
-            type: 'input',
-            name: 'managerName',
-            message: "Enter team manager's name:",
-            validate: managerName => {
-                if (managerName) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        },
-        {
-            type: 'input',
-            name: 'managerId',
-            message: "Enter manager's employee ID:",
-            validate: managerId => {
-                if (managerId) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        },
-        {
-            type: 'input',
-            name: 'managerEmail',
-            message: "Enter manager's e-mail address:",
-            validate: managerEmail => {
-                if (managerEmail) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        },
-        {
-            type: 'input',
-            name: 'office',
-            message: "Enter manager's office number:",
-            validate: office => {
-                if (office) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        }
-    ])
-    .then(managerInput => {
-        const managerInput = { managerName, managerId, managerEmail, office };
-        const manager = new Manager (managerName, managerId, managerEmail, office);
 
-        teamArray.push(manager);
-        console.log(teamArray);
-    })
-};
-    
-// Confirm or deny new employee
-const addEmployee = () => {
-    return inquirer.prompt ([
-    {
-        type: 'confirm',
-        name: 'confirmNewMember',
-        message: "Would you like to add another team member?",
-        default: false
-    },
-    {
-        type: 'list',
-        name: 'role',
-        message: "Choose employee role:",
-        choices: ['Engineer', 'Intern']
-    },
 
-// Add employee info
-    {
-        type: 'input',
-        name: 'nameInput',
-        message: "Enter employee name:",
-        validate: nameInput => {
-            if (nameInput) {
-                return true;
-            } else {
-                return false;
-            }
-        }
+const addManager = [
+  {
+    type: "input",
+    name: "managerName",
+    message: "Enter team manager's name:",
+    validate: (managerName) => {
+      if (managerName) {
+        return true;
+      } else {
+        return false;
+      }
     },
-    {
-        type: 'input',
-        name: 'id',
-        message: "Enter employee ID:",
-        validate: id => {
-            if (id) {
-                return true;
-            } else {
-                return false;
-            }
-        }
+  },
+  {
+    type: "input",
+    name: "managerId",
+    message: "Enter manager's employee ID:",
+    validate: (managerId) => {
+      if (managerId) {
+        return true;
+      } else {
+        return false;
+      }
     },
-    {
-        type: 'input',
-        name: 'email',
-        message: "Enter employee's e-mail address:",
-        validate: email => {
-            if (email) {
-                return true;
-            } else {
-                return false;
-            }
-        }
+  },
+  {
+    type: "input",
+    name: "managerEmail",
+    message: "Enter manager's e-mail address:",
+    validate: (managerEmail) => {
+      if (managerEmail) {
+        return true;
+      } else {
+        return false;
+      }
     },
+  },
+  {
+    type: "input",
+    name: "office",
+    message: "Enter manager's office number:",
+    validate: (office) => {
+      if (office) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
+];
 
-// Engineer only
-    {
-        type: 'input',
-        name: 'github',
-        message: "Enter engineer's GitHub username:",
-        when: (input) => input.role === "Engineer",
-        validate: github => {
-            if (github) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    },
+const addEmployee = [
+  {
+    type: "confirm",
+    name: "confirmNewMember",
+    message: "Would you like to add another team member?",
+    default: false,
+  },
+  {
+    type: "list",
+    name: "role",
+    message: "Choose employee role:",
+    choices: ["Engineer", "Intern"],
+  },
 
-// Intern only
-    {
-        type: 'input',
-        name: 'school',
-        message: "Enter school intern attends:",
-        when: (input) => input.role === "Intern",
-        validate: school => {
-            if (school) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
-    ])
-};
+  // Add employee info
+  {
+    type: "input",
+    name: "nameInput",
+    message: "Enter employee name:",
+    validate: (nameInput) => {
+      if (nameInput) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
+  {
+    type: "input",
+    name: "id",
+    message: "Enter employee ID:",
+    validate: (id) => {
+      if (id) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
+  {
+    type: "input",
+    name: "email",
+    message: "Enter employee's e-mail address:",
+    validate: (email) => {
+      if (email) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
+
+  // Engineer only
+  {
+    type: "input",
+    name: "github",
+    message: "Enter engineer's GitHub username:",
+    when: (input) => input.role === "Engineer",
+    validate: (github) => {
+      if (github) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
+
+  // Intern only
+  {
+    type: "input",
+    name: "school",
+    message: "Enter school intern attends:",
+    when: (input) => input.role === "Intern",
+    validate: (school) => {
+      if (school) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
+];
 
 // Function to write HTML file
 function writeToFile(fileName, data) {
-    return fs.writeFileSync(path.join(process.cwd(), fileName), data);
+  return fs.writeFileSync(path.join(process.cwd(), fileName), data);
 }
 
 // Function to initialize app
 function init() {
-    inquirer.prompt(addManager)
-    .then((inquirerResponses) => {
-        console.log(inquirerResponses);
-        writeToFile("./dist/My_Team.html", generateHTML(inquirerResponses));
-        inquirer.prompt(addEmployee)
-        .then((inquirerResponses) => {
-            console.log(inquirerResponses);
-            writeToFile("./dist/My_Team.html", generateHTML(inquirerResponses));
-        });
+  console.log("init start");
+  writeToFile(
+    "./dist/My_Team.html",
+    `<!DOCTYPE html> 
+    <html lang="en"> 
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+      <script src="https://kit.fontawesome.com/dfccfe40cc.js" crossorigin="anonymous"></script>
+      <link rel="stylesheet" href="style.css">
+      <title>My Team</title>
+  
+    </head>
+    <body>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12 bg-danger jumbotron">
+            <h1 class="text-center text-white">My Team</h1>
+          </div>
+        </div>
+      </div>
+      <div class="container-fluid d-flex">
+      `
+  );
+  // Create manager
+  inquirer.prompt(addManager).then((inquirerResponses) => {
+    console.log(inquirerResponses);
+    const manager = new Manager(
+      inquirerResponses.managerName,
+      inquirerResponses.managerId,
+      inquirerResponses.managerEmail,
+      inquirerResponses.office
+    );
+    console.log(manager.provideHtml());
+    // Add manager to HTML
+    fs.appendFileSync("./dist/My_Team.html", manager.provideHtml(), (err) =>
+      err ? console.log(err) : ""
+    );
+    // Create engineer
+    inquirer.prompt(addEmployee).then((inquirerResponses) => {
+      console.log(inquirerResponses);
+      const engineer = new Engineer(
+        inquirerResponses.nameInput,
+        inquirerResponses.id,
+        inquirerResponses.email,
+        inquirerResponses.github
+      );
+      console.log(engineer.provideHtml());
+      // Add engineer to HTML
+      fs.appendFileSync("./dist/My_Team.html", engineer.provideHtml(), (err) =>
+      err ? console.log(err) : ""
+      );
     });
-    
+    // Create intern
+    inquirer.prompt(addEmployee).then((inquirerResponses) => {
+      console.log(inquirerResponses);
+      const intern = new Intern(
+        inquirerResponses.nameInput,
+        inquirerResponses.id,
+        inquirerResponses.email,
+        inquirerResponses.school
+      );
+      console.log(intern.provideHtml());
+      // Add intern to HTML
+      fs.appendFileSync("./dist/My_Team.html", intern.provideHtml(), (err) =>
+      err ? console.log(err) : ""
+      );
+    });
+    // Close open HTML tags
+    fs.appendFileSync(
+      "./dist/My_Team.html",
+      `    </div>
+    </body>
+    </html>`,
+      (err) => (err ? console.log(err) : "")
+    );
+  });
 }
 
 // Call to initialize app
