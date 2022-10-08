@@ -62,89 +62,132 @@ const addManager = [
     },
   },
 ];
+// Add employee
+function addEmployee () {
+  inquirer.prompt([
+      {
+          type: 'list',
+          message: 'Would you like to add more?',
+          name: `choice`,
+          choices: ["Engineer", "Intern", "I am done"]
+      }
+  ]).then(response => {
+      if(response.choice == "Engineer") {
+          engineerQuestions()
+      }else if (response.choice == "Intern") {
+          internQuestions()
+      }else {
+          createHTML()
+      }
+  })
+}
 
-const addEmployee = [
-  {
-    type: "confirm",
-    name: "confirmNewMember",
-    message: "Would you like to add another team member?",
-    default: false,
-  },
-  {
-    type: "list",
-    name: "role",
-    message: "Choose employee role:",
-    choices: ["Engineer", "Intern"],
-  },
-
-  // Add employee info
-  {
-    type: "input",
-    name: "nameInput",
-    message: "Enter employee name:",
-    validate: (nameInput) => {
-      if (nameInput) {
-        return true;
-      } else {
-        return false;
+  // Add engineer questions
+  function engineerQuestions () {
+    inquirer.prompt([
+      {
+        type: "input",
+        name: "nameInput",
+        message: "Enter employee name:",
+        validate: (nameInput) => {
+          if (nameInput) {
+            return true;
+          } else {
+            return false;
+          }
+        },
+      },
+      {
+        type: "input",
+        name: "id",
+        message: "Enter employee ID:",
+        validate: (id) => {
+          if (id) {
+            return true;
+          } else {
+            return false;
+          }
+        },
+      },
+      {
+        type: "input",
+        name: "email",
+        message: "Enter employee's e-mail address:",
+        validate: (email) => {
+          if (email) {
+            return true;
+          } else {
+            return false;
+          }
+        },
+      },
+      {
+        type: "input",
+        name: "github",
+        message: "Enter engineer's GitHub username:",
+        validate: (github) => {
+          if (github) {
+            return true;
+          } else {
+            return false;
+          }
+        },
       }
-    },
-  },
-  {
-    type: "input",
-    name: "id",
-    message: "Enter employee ID:",
-    validate: (id) => {
-      if (id) {
-        return true;
-      } else {
-        return false;
+    ])
+  }
+  // 
+  function internQuestions () {
+    inquirer.prompt([
+      {
+        type: "input",
+        name: "nameInput",
+        message: "Enter employee name:",
+        validate: (nameInput) => {
+          if (nameInput) {
+            return true;
+          } else {
+            return false;
+          }
+        },
+      },
+      {
+        type: "input",
+        name: "id",
+        message: "Enter employee ID:",
+        validate: (id) => {
+          if (id) {
+            return true;
+          } else {
+            return false;
+          }
+        },
+      },
+      {
+        type: "input",
+        name: "email",
+        message: "Enter employee's e-mail address:",
+        validate: (email) => {
+          if (email) {
+            return true;
+          } else {
+            return false;
+          }
+        },
+      },
+      {
+        type: "input",
+        name: "school",
+        message: "Enter school intern attends:",
+        validate: (school) => {
+          if (school) {
+            return true;
+          } else {
+            return false;
+          }
+        },
       }
-    },
-  },
-  {
-    type: "input",
-    name: "email",
-    message: "Enter employee's e-mail address:",
-    validate: (email) => {
-      if (email) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-  },
-
-  // Engineer only
-  {
-    type: "input",
-    name: "github",
-    message: "Enter engineer's GitHub username:",
-    when: (input) => input.role === "Engineer",
-    validate: (github) => {
-      if (github) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-  },
-
-  // Intern only
-  {
-    type: "input",
-    name: "school",
-    message: "Enter school intern attends:",
-    when: (input) => input.role === "Intern",
-    validate: (school) => {
-      if (school) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-  },
-];
+    ])
+  }
 
 // Function to write HTML file
 function writeToFile(fileName, data) {
