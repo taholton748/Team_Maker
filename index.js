@@ -71,7 +71,8 @@ function addEmployee () {
           name: `choice`,
           choices: ["Engineer", "Intern", "I am done"]
       }
-  ]).then(response => {
+  ])
+  .then(response => {
       if(response.choice == "Engineer") {
           engineerQuestions()
       }else if (response.choice == "Intern") {
@@ -236,6 +237,7 @@ function init() {
     fs.appendFileSync("./dist/My_Team.html", manager.provideHtml(), (err) =>
       err ? console.log(err) : ""
     );
+    // addEmployee();
     // Create engineer
     inquirer.prompt(addEmployee).then((inquirerResponses) => {
       console.log(inquirerResponses);
