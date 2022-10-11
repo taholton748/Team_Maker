@@ -63,28 +63,41 @@ const addManager = [
   },
 ];
 // Add employee
-function addEmployee () {
-  inquirer.prompt([
+const addEmployee = [
       {
           type: 'list',
-          message: 'Would you like to add more?',
+          message: 'Would you like to add another employee?',
           name: `choice`,
           choices: ["Engineer", "Intern", "I am done"]
-      }
-  ])
+      }]
+
+const employeeType = () => {
+  inquirer.prompt(addEmployee)
   .then(response => {
-      if(response.choice == "Engineer") {
-          engineerQuestions()
-      }else if (response.choice == "Intern") {
-          internQuestions()
-      }else {
-          createHTML()
-      }
-  })
+    if(response.choice == "Engineer") {
+      console.log(response.choice);
+      createEngineer()
+  }else if (response.choice == "Intern") {
+    console.log(response.choice);
+      createIntern();
+  }
+})
 }
 
+
+      // .then(response => {
+      // if(response.choice == "Engineer") {
+      //     engineerQuestions()
+      // }else if (response.choice == "Intern") {
+      //     internQuestions()
+  //     }else {
+  //         createHTML()
+  //     }
+  // })
+
+
   // Add engineer questions
-  function engineerQuestions () {
+  function createEngineer () {
     inquirer.prompt([
       {
         type: "input",
@@ -134,10 +147,23 @@ function addEmployee () {
           }
         },
       }
-    ])
+    ]).then(engineerResponses => {
+      console.log(engineerResponses);
+      const engineer = new Engineer(
+        engineerResponses.nameInput,
+        engineerResponses.id,
+        engineerResponses.email,
+        engineerResponses.github
+      );
+      console.log(engineer.provideHtml());
+      // Add engineer to HTML
+      fs.appendFileSync("./dist/My_Team.html", engineer.provideHtml(), (err) =>
+      err ? console.log(err) : ""
+      );
+    });
   }
   // 
-  function internQuestions () {
+  function createIntern () {
     inquirer.prompt([
       {
         type: "input",
@@ -238,36 +264,37 @@ function init() {
       err ? console.log(err) : ""
     );
     // addEmployee();
+    employeeType();
     // Create engineer
-    inquirer.prompt(addEmployee).then((inquirerResponses) => {
-      console.log(inquirerResponses);
-      const engineer = new Engineer(
-        inquirerResponses.nameInput,
-        inquirerResponses.id,
-        inquirerResponses.email,
-        inquirerResponses.github
-      );
-      console.log(engineer.provideHtml());
-      // Add engineer to HTML
-      fs.appendFileSync("./dist/My_Team.html", engineer.provideHtml(), (err) =>
-      err ? console.log(err) : ""
-      );
-    });
-    // Create intern
-    inquirer.prompt(addEmployee).then((inquirerResponses) => {
-      console.log(inquirerResponses);
-      const intern = new Intern(
-        inquirerResponses.nameInput,
-        inquirerResponses.id,
-        inquirerResponses.email,
-        inquirerResponses.school
-      );
-      console.log(intern.provideHtml());
-      // Add intern to HTML
-      fs.appendFileSync("./dist/My_Team.html", intern.provideHtml(), (err) =>
-      err ? console.log(err) : ""
-      );
-    });
+    // inquirer.prompt(addEmployee).then((inquirerResponses) => {
+      // console.log(inquirerResponses);
+      // const engineer = new Engineer(
+      //   inquirerResponses.nameInput,
+      //   inquirerResponses.id,
+      //   inquirerResponses.email,
+      //   inquirerResponses.github
+      // );
+      // console.log(engineer.provideHtml());
+      // // Add engineer to HTML
+      // fs.appendFileSync("./dist/My_Team.html", engineer.provideHtml(), (err) =>
+      // err ? console.log(err) : ""
+      // );
+    // });
+    // // Create intern
+    // inquirer.prompt(addEmployee).then((inquirerResponses) => {
+    //   console.log(inquirerResponses);
+    //   const intern = new Intern(
+    //     inquirerResponses.nameInput,
+    //     inquirerResponses.id,
+    //     inquirerResponses.email,
+    //     inquirerResponses.school
+    //   );
+    //   console.log(intern.provideHtml());
+    //   // Add intern to HTML
+    //   fs.appendFileSync("./dist/My_Team.html", intern.provideHtml(), (err) =>
+    //   err ? console.log(err) : ""
+    //   );
+    // });
     // Close open HTML tags
     fs.appendFileSync(
       "./dist/My_Team.html",
