@@ -16,7 +16,8 @@
   Must install Jest to test. Also run "npm install" for necessary packages to run application. Clone repository to your local machine. <hr>
 
   ## Usage
-  Start the app with "node index.js". Enter input for the question prompts for your manager. Choose whether you would like to add another employee, either intern or engineer. Keep adding the desired employees until you are finished and the input will create an HTML file for you to run in your browser. <hr>
+  Start the app with "node index.js". Enter input for the question prompts for your manager. Choose whether you would like to add another employee, either intern or engineer. Keep adding the desired employees until you are finished and the input will create an HTML file for you to run in your browser. [Click here](https://drive.google.com/file/d/1tMTFj5ILr6XjvOIdav9jTU19MO3B8DYL/view) for video walkthrough.<hr>
+
 
   ## Contributing
   Contact for major changes or contributions. Pull requests welcome. <hr>
